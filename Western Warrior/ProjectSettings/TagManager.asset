@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - CollidableTilemap
   layers:
   - Default
   - TransparentFX
@@ -38,6 +39,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: bottomLayer
+    uniqueID: 1321406293
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: topLayer
+    uniqueID: 562657083
     locked: 0
