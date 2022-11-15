@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     private float movementSpeed = 5;
     [SerializeField] Animator animatorPlayer;
     [SerializeField] Animator animatorGun;
+
     static int maxBullets = 6;
     public int ammo;
     public int currentBullets;
@@ -106,22 +107,5 @@ public class PlayerMovement : MonoBehaviour
             currentBullets += ammo;
             ammo = 0;
         }                
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.transform.tag == "Enemy")
-        {
-            --HealthManager.health;
-            if(HealthManager.health <= 0)
-            {
-                //game over is true (switch scenes?)
-                //gameObject.SetActive(false);              
-            }
-            else
-            {
-                //play hurt animation?
-            }
-        }
     }
 }
