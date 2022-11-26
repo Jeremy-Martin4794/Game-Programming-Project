@@ -6,7 +6,6 @@ public class MoveBullet : MonoBehaviour
 {
     private float speed = 20f;
     [SerializeField] Rigidbody2D rb;
-    [SerializeField] GameObject playerObject;
     void Start()
     {
         rb.velocity = transform.up * speed;

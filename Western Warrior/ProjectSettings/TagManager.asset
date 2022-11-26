@@ -7,6 +7,9 @@ TagManager:
   - CollidableTilemap
   - Trophy
   - Enemy
+  - Ammo
+  - HealthPowerup
+  - SpeedPowerup
   layers:
   - Default
   - TransparentFX

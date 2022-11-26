@@ -5,7 +5,8 @@ using TMPro;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float movementSpeed = 5;
+    private const float defaultMovementSpeed = 5;
+    private float movementSpeed = defaultMovementSpeed;
     [SerializeField] Animator animatorPlayer;
     [SerializeField] Animator animatorGun;
 
@@ -15,23 +16,70 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] TextMeshProUGUI ammoText;
     [SerializeField] GameObject bulletPrefab;
     [SerializeField] Transform bulletSpawnPoint;
+    public bool speedBoost;
+    public float speedBoostTime;
+
+    public bool isHurt;
+    public float hurtCount;
+    public bool gameOver;
+    public bool gameWon;
 
     private void Start()
     {
         ammo = 12;
         currentBullets = 6;
+        speedBoost = false;
+        speedBoostTime = 0;
+        isHurt = false;
+        hurtCount = 0;
+        gameOver = false;
+        gameWon = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Move();
-        Shoot();
+        if (!gameOver && !gameWon)
+        {
+            Move();
+            Shoot();
+        }
         ammoText.text = "Ammo: " + ammo.ToString();
+        if (isHurt)
+        {
+            if(hurtCount <= 0)
+            {
+                animatorPlayer.SetBool("isHurt", false);
+                isHurt = false;
+                hurtCount = 0;
+            }
+            else
+            {
+                hurtCount -= Time.deltaTime;
+            }
+        }
     }
 
     private void Move()
     {
+        if (speedBoost)
+        {
+            if(speedBoostTime <= 0)
+            {
+                speedBoost = false;
+                speedBoostTime = 0;
+            }
+            else
+            {
+                speedBoostTime -= Time.deltaTime;
+            }
+            movementSpeed = defaultMovementSpeed + (defaultMovementSpeed / 2);
+        }
+        else
+        {
+            movementSpeed = defaultMovementSpeed;
+        }
+
         Vector2 movementVector = new Vector2(0, 0);
         if (Input.GetKey("d"))
         {
