@@ -12,12 +12,18 @@ public class DetectBulletCollisions : MonoBehaviour
             collision.gameObject.GetComponent<EnemyMovement>().hurtCount += 1;
             if (collision.gameObject.GetComponent<EnemyMovement>().hurtCount >= 3)
             {
+                if (!collision.gameObject.GetComponent<EnemyMovement>().deathSoundPlayed)
+                {
+                    collision.gameObject.GetComponent<EnemyMovement>().enemyDead.Play();
+                    collision.gameObject.GetComponent<EnemyMovement>().deathSoundPlayed = true;
+                }
                 collision.gameObject.GetComponent<EnemyMovement>().isDead = true;
                 animatorEnemy.SetBool("isDead", true);
                 Destroy(collision.gameObject, 1);
             }
             else
             {
+                collision.gameObject.GetComponent<EnemyMovement>().enemyHurt.Play();
                 animatorEnemy.SetBool("isHurt", true);
                 collision.gameObject.GetComponent<EnemyMovement>().isHurt = true;
                 collision.gameObject.GetComponent<EnemyMovement>().hurtTime = 60;

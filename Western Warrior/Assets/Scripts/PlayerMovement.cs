@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class PlayerMovement : MonoBehaviour
     public float hurtCount;
     public bool gameOver;
     public bool gameWon;
+    public float gameOverTime;
+
+    [SerializeField] AudioSource gunshot;
 
     private void Start()
     {
@@ -34,11 +38,18 @@ public class PlayerMovement : MonoBehaviour
         hurtCount = 0;
         gameOver = false;
         gameWon = false;
+        gameOverTime = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (gameOver || gameWon)
+        {
+            gameOverTime += Time.deltaTime;
+            if(gameOverTime >= 3)
+                SceneManager.LoadScene("Menu");
+        }
         if (!gameOver && !gameWon)
         {
             Move();
@@ -131,6 +142,7 @@ public class PlayerMovement : MonoBehaviour
         {
             if (currentBullets > 0)
             {
+                gunshot.Play();
                 animatorGun.SetBool("isShooting", true);
                 --currentBullets;               
                 Instantiate(bulletPrefab, bulletSpawnPoint.position, bulletSpawnPoint.rotation);

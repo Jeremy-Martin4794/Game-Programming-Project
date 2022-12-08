@@ -12,6 +12,10 @@ public class EnemyMovement : MonoBehaviour
     public int hurtTime;
     public int hurtCount;
 
+    public AudioSource enemyHurt;
+    public AudioSource enemyDead;
+    public bool deathSoundPlayed;
+
     void Start()
     {
         gameObject.GetComponent<Animator>().SetBool("isActive", true);
@@ -20,6 +24,7 @@ public class EnemyMovement : MonoBehaviour
         isDead = false;
         hurtTime = 0;
         hurtCount = 0;
+        deathSoundPlayed = false;
     }
 
     private void Update()

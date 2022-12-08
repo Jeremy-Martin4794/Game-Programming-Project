@@ -10,11 +10,16 @@ public class DetectCollision : MonoBehaviour
     [SerializeField] GameObject loseTextObject;
     [SerializeField] TextMeshProUGUI loseText;
 
+    [SerializeField] AudioSource hurt;
+    [SerializeField] AudioSource die;
+    private bool deadSoundPlayed;
+
     // Start is called before the first frame update
     void Start()
     {
         winTextObject.SetActive(false);
         loseTextObject.SetActive(false);
+        deadSoundPlayed = false;
     }
 
     // Update is called once per frame
@@ -28,18 +33,23 @@ public class DetectCollision : MonoBehaviour
         {
             if (!collision.gameObject.GetComponent<EnemyMovement>().isDead)
             {
-                --HealthManager.health;
-                if (HealthManager.health <= 0)
+                --gameObject.GetComponentInParent<HealthManager>().health;
+                if (gameObject.GetComponentInParent<HealthManager>().health <= 0)
                 {
+                    if (!deadSoundPlayed)
+                    {
+                        die.Play();
+                        deadSoundPlayed = true;
+                    }
                     gameObject.GetComponentInParent<PlayerMovement>().gameOver = true;
                     loseTextObject.SetActive(true);
                     //play death animation
                     gameObject.GetComponent<Animator>().SetBool("isDead", true);
                     //Destroy(gameObject, 4);
-                    //scene transition
                 }
                 else
                 {
+                    hurt.Play();
                     //play hurt animation
                     gameObject.GetComponent<Animator>().SetBool("isHurt", true);
                     gameObject.GetComponentInParent<PlayerMovement>().isHurt = true;
@@ -65,9 +75,9 @@ public class DetectCollision : MonoBehaviour
         else if(collision.transform.tag == "HealthPowerup")
         {
             Destroy(collision.gameObject);
-            if(HealthManager.health < HealthManager.maxHealth)
+            if(gameObject.GetComponentInParent<HealthManager>().health < HealthManager.maxHealth)
             {
-                ++HealthManager.health;
+                ++gameObject.GetComponentInParent<HealthManager>().health;
             }
         }
         else if(collision.transform.tag == "SpeedPowerup")
